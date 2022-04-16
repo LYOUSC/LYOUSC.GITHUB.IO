@@ -38,8 +38,11 @@
         "esri/views/MapView",
         "esri/layers/FeatureLayer",
         "esri/widgets/ScaleBar",
-        "esri/widgets/Legend"
-      ], (Map, MapView, FeatureLayer, ScaleBar, Legend) => {
+        "esri/widgets/Legend",
+        "esri/widgets/Search",
+        "esri/widgets/FeatureTable",
+        "esri/widgets/LayerList"
+      ], (Map, MapView, FeatureLayer, ScaleBar, Legend, Search, FeatureTable, LayerList) => {
         const fl = new FeatureLayer({
           url: "https://www.geosceneonline.cn/server/rest/services/Hosted/全国各省地方财政环境保护支出/FeatureServer"
         });
@@ -51,8 +54,8 @@
         const view = new MapView({
           container: "viewDiv",
           map: map,
-          zoom: 5,
-          center: [120, 21] // longitude, latitude
+          zoom: 3,
+          center: [130, 33] // longitude, latitude
         });
         let scaleBar = new ScaleBar({
           view: view,
@@ -63,14 +66,35 @@
           position: "bottom-left"
         });
         let legend = new Legend({
-          view: view
-          /* layerinfos:[{
-    layer:f1,
-    title:"州界"
-  }]*/
+          view: view,
+         layerInfos:[{
+    layer:fl,
+    title:"全国各省地方财政环境保护支出"
+  }]
         });
+    view.ui.add(legend, "bottom-right");
+     const searchWidget = new Search({
+        view: view
+      });
 
-        view.ui.add(legend, "bottom-right");
+      view.ui.add(searchWidget, {
+        position: "top-right",
+         index: 2
+      });
+     
+      const featureTable = new FeatureTable({
+      view: view, 
+      layer: fl,
+       container: "viewDiv"
+  });
+
+     let layerList = new LayerList({
+  view: view
+});
+
+view.ui.add(layerList, {
+  position: "top-right"
+}); 
       });
     </script>
   </head>
